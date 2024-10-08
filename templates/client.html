@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Client Page</title>
+</head>
+<body>
+    <h1>Client Page</h1>
+    <h2>Questions</h2>
+    <ul>
+        {% for question in questions %}
+            <li>{{ question.question }} - <a href="/uploads/{{ question.file }}">{{ question.file }}</a>
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="question_id" value="{{ question.id }}">
+                    <label>Reply:</label>
+                    <input type="text" name="reply" required><br>
+                    <label>Attachment:</label>
+                    <input type="file" name="file"><br>
+                    <button type="submit">Submit Reply</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

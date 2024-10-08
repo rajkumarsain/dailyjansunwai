@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <h2>Add New Question</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Question:</label>
+        <input type="text" name="question" required><br>
+        <label>Attachment:</label>
+        <input type="file" name="file"><br>
+        <button type="submit">Add Question</button>
+    </form>
+
+    <h2>All Questions</h2>
+    <ul>
+        {% for question in questions %}
+            <li>{{ question.question }} - <a href="/uploads/{{ question.file }}">{{ question.file }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
