@@ -7,8 +7,15 @@ import os
 import uuid
 
 app = Flask(__name__)
+# Root route
+@app.route('/')
+def home():
+    return render_template('index.html')
+    #return "<h1> Hello, Falsk is working!</h1>"
+
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Email configuration
@@ -24,13 +31,11 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-from models import User, Question, Reply
-
-
 @login_manager.user_loader
 def load_user(user_id):
+    #import user model inside the function to avoid circular import
+    from models import User
     return User.query.get(int(user_id))
-
 
 # Send verification email function
 def send_verification_email(user):
@@ -47,6 +52,7 @@ def send_verification_email(user):
 # User registration with email verification
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    from models import User
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -72,6 +78,7 @@ def register():
 # Email verification route
 @app.route('/verify/<token>')
 def verify_email(token):
+    from models import User
     user = User.query.filter_by(verification_token=token).first()
     if user:
         user.verified = True
@@ -87,6 +94,7 @@ def verify_email(token):
 # User login with verification check and password hashing
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    from models import User
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -116,7 +124,6 @@ def logout():
 
 # Admin and client routes (same as before)
 # ...
-
 
 if __name__ == '__main__':
     db.create_all()
