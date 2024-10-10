@@ -21,3 +21,4 @@ class Reply(db.Model):
     file = db.Column(db.String(200))  # Optional file attachment
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#change
